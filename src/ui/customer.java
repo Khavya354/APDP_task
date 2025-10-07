@@ -7,11 +7,15 @@ package ui;
 
 import code.customerCode;
 import code.productCode;
+import java.awt.print.PrinterException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.Statement;
+import java.text.MessageFormat;
+import javax.print.PrintException;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class customer extends javax.swing.JFrame {
@@ -22,6 +26,8 @@ public class customer extends javax.swing.JFrame {
     public customer() {
         initComponents();
         showCustomer();
+        sum();
+                
     }
 
     /**
@@ -36,6 +42,10 @@ public class customer extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCustomer = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        lbltotalAmount = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,25 +80,70 @@ public class customer extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Print");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Search by name");
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
+        lbltotalAmount.setText("jLabel2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(40, 40, 40)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(98, 98, 98)
+                            .addComponent(jButton2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(62, 62, 62)
+                        .addComponent(lbltotalAmount)))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(38, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(10, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lbltotalAmount)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addGap(41, 41, 41))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(jButton2)))
+                .addGap(33, 33, 33))
         );
 
         pack();
@@ -102,6 +157,59 @@ public class customer extends javax.swing.JFrame {
         showCustomer();
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        try {
+            boolean complete = tblCustomer.print(JTable.PrintMode.FIT_WIDTH,
+                    new MessageFormat("Datas"),
+                    new MessageFormat("Page{0}"));
+            if(complete){
+                JOptionPane.showMessageDialog(null,"Complete");
+                
+            }else{
+                JOptionPane.showMessageDialog(null,"Not Complete");
+            }
+        } catch (PrinterException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+        ArrayList<customerCode>list = new ArrayList<customerCode>();
+        String search = jTextField1.getText().trim();
+        
+        try {
+            Connection con;
+            Statement st;
+            con = db.db.getConnection();
+            st = con.createStatement();
+            String query = "Select * from customer where Name like '%" +search + "%'";
+            ResultSet rs = st.executeQuery(query);
+            customerCode cus;
+            while (rs.next()) {
+                cus = new customerCode(rs.getString("c_id"), rs.getString("name"), rs.getString("telephone"),rs.getString("email"));
+                list.add(cus);
+            }
+            DefaultTableModel model = (DefaultTableModel) tblCustomer.getModel();
+            model.setColumnCount(0);
+            
+             Object[] row = new Object[4];
+        
+        for (int i = 0; i < list.size(); i++) {
+            row[0] = list.get(i).getC_id();
+            row[1] = list.get(i).getName();
+            row[2] = list.get(i).getTelephone();
+            row[3] = list.get(i).getEmail();
+            model.addRow(row);
+        }
+        
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,e);
+        }
+            
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     public ArrayList<customerCode> CustomerList() {
         ArrayList<customerCode> CustomerList = new ArrayList<>();
@@ -135,7 +243,17 @@ public class customer extends javax.swing.JFrame {
             row[3] = list.get(i).getEmail();
             model.addRow(row);
         }
+        
+      
     }
+      public void sum(){
+            double total = 0;
+            DefaultTableModel model = (DefaultTableModel)tblCustomer.getModel();
+            for (int i = 0; i < tblCustomer.getRowCount();i++){
+                total = total + Double.parseDouble(model.getValueAt(i,2).toString());
+            }
+            lbltotalAmount.setText(Double.toString(total));
+        }
     
     /**
      * @param args the command line arguments
@@ -174,7 +292,11 @@ public class customer extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lbltotalAmount;
     private javax.swing.JTable tblCustomer;
     // End of variables declaration//GEN-END:variables
 }
